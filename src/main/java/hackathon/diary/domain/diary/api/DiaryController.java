@@ -45,6 +45,10 @@ public class DiaryController {
         return new ResponseTemplate<>(HttpStatus.OK, "일기 수정 성공");
     }
 
+    @GetMapping("/my")
+    public ResponseTemplate<?> myDiary(@AuthenticationPrincipal String email) throws MemberNotFoundException {
+        return new ResponseTemplate<>(HttpStatus.OK, "내 일기 가져오기 성공", diaryService.getMyDairy(email));
+    }
     @GetMapping("/recent")
     public ResponseTemplate<?> recentDiary(@AuthenticationPrincipal String email) throws MemberNotFoundException {
         return new ResponseTemplate<>(HttpStatus.OK, "최근 일기 불러오기 성공", diaryService.getRecentDiaryList(email));

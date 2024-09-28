@@ -27,6 +27,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -121,6 +123,13 @@ public class DiaryService {
         diary.updateTitleAndContent(title, content);
     }
 
+    @Transactional(readOnly = true)
+    public List<DiaryResponseDto> getMyDairy(String email) throws MemberNotFoundException {
+        Member member = globalUtil.findByMemberWithEmail(email);
+        return diaryRepository.findAllByMember(member).stream()
+                .map(this::createDiaryResponseDto)
+                .collect(Collectors.toList());
+    }
 
     private Diary createDiary(Map<String, String> generatedDiary, String voiceText, Member member, String imageUrl) {
         return Diary.builder()

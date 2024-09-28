@@ -31,4 +31,12 @@ public class DiaryCustomRepositoryImpl implements DiaryCustomRepository {
                 .limit(3)
                 .fetch();
     }
+
+    @Override
+    public List<Diary> findAllByMember(Member member) {
+        return jpaQueryFactory
+                .selectFrom(diary)
+                .where(diary.member.eq(member))
+                .fetch();
+    }
 }

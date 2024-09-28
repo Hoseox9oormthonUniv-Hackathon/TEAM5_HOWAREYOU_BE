@@ -10,4 +10,6 @@ public interface DiaryCustomRepository {
     List<Diary> findPublicDiaryList();
 
     List<Diary> findRecentDiariesByMember(Member member);
+
+    List<Diary> findAllByMember(Member member);
 }
