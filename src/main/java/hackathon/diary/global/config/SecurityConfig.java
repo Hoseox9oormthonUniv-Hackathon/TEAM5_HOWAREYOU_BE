@@ -4,6 +4,7 @@ import hackathon.diary.global.jwt.filter.JwtAuthenticationEntryPoint;
 import hackathon.diary.global.jwt.filter.JwtAuthorizationFilter;
 import hackathon.diary.global.jwt.filter.JwtExceptionFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -27,6 +29,9 @@ public class SecurityConfig {
 
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtExceptionFilter jwtExceptionFilter;
+
+    @Value("${spring.infra.be}")
+    private static String uri;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -50,9 +55,9 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "https://www.howareyou2024.site"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("*"));
+        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "https://www.howareyou2024.site", "http://localhost:5000", uri));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("*"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
