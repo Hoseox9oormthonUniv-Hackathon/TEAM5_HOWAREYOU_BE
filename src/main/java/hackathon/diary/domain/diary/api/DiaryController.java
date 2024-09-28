@@ -18,6 +18,7 @@ import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin("*")
 @RequestMapping("/api/v1/diary")
 @Tag(name = "Diary Controller", description = "Diary API")
 public class DiaryController {

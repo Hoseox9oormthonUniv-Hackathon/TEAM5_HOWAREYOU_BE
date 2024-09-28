@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -30,17 +31,15 @@ public class SecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Value("${spring.infra.fe}")
-    private static String URL;
-
-    @Value("${spring.infra.be}")
-    private static String Uri;
-
+    private String URL;
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS 설정 적용
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(authorize -> authorize.anyRequest().authenticated())
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // OPTIONS 요청 허용
+                        .anyRequest().authenticated()
+                )
                 .exceptionHandling(handle -> handle.authenticationEntryPoint(new JwtAuthenticationEntryPoint()))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class)
@@ -53,17 +52,6 @@ public class SecurityConfig {
     public WebSecurityCustomizer webSecurityCustomizer() {
         return webSecurity -> webSecurity.ignoring()
                 .requestMatchers("/swagger-ui/**", "/favicon.ico", "/api-docs/**", "/api/v1/auth/**", "/ws/**", "/api/v1/health");
-    }
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", Uri, URL, "http://localhost:5000")); // 허용할 프론트엔드 도메인 설정
-        configuration.setAllowedMethods(Arrays.asList("*")); // 허용할 HTTP 메서드 설정
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 허용할 헤더 설정
-        configuration.setAllowCredentials(true); // 쿠키 전송을 허용할지 설정
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // 모든 경로에 대해 CORS 설정 적용
-        return source;
     }
 
 }
