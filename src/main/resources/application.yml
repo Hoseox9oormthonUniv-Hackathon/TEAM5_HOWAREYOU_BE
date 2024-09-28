@@ -22,6 +22,10 @@ spring:
         dialect: org.hibernate.dialect.MySQLDialect
     open-in-view: false
 
+  infra:
+    fe: ${spring.infra.fe}
+    be: ${spring.infra.be}
+
   jwt:
     secretKey: ${spring.jwt.secretKey}
     access:
