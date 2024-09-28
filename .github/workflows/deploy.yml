@@ -89,4 +89,4 @@ jobs:
 
       # 새 컨테이너 실행
       - name: docker run new container
-        run: sudo docker run --rm -it -d -p 8092:8092 --name diary ${{ secrets.DOCKERHUB_USERNAME }}/diary
+        run: sudo docker run --rm -it -d -p 5000:5000 --name diary ${{ secrets.DOCKERHUB_USERNAME }}/diary
