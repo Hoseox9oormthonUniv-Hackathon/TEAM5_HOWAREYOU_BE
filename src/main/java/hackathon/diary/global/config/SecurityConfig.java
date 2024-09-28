@@ -30,7 +30,10 @@ public class SecurityConfig {
     private final JwtExceptionFilter jwtExceptionFilter;
 
     @Value("${spring.infra.fe}")
-    private static String uri;
+    private static String URL;
+
+    @Value("${spring.infra.be}")
+    private static String Uri;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,7 +57,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", uri)); // 허용할 프론트엔드 도메인 설정
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", Uri, URL, "http://localhost:5000")); // 허용할 프론트엔드 도메인 설정
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 HTTP 메서드 설정
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type")); // 허용할 헤더 설정
         configuration.setAllowCredentials(true); // 쿠키 전송을 허용할지 설정
