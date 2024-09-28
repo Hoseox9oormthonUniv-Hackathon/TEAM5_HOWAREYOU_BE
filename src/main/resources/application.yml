@@ -1,0 +1,75 @@
+spring:
+  profiles:
+    active: prod
+    include: auth
+
+  main:
+    allow-bean-definition-overriding: true
+
+  datasource:
+    url: ${spring.datasource.url}
+    username: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    driver-class-name: ${spring.datasource.driver-class-name}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+    open-in-view: false
+
+  jwt:
+    secretKey: ${spring.jwt.secretKey}
+    access:
+      expiration: ${spring.jwt.access.expiration}
+      header: ${spring.jwt.access.header}
+    refresh:
+      expiration: ${spring.jwt.refresh.expiration}
+      header: ${spring.jwt.refresh.header}
+
+  openai:
+    api:
+      key: ${spring.openai.api.key}
+
+  cloud:
+    aws:
+      s3:
+        bucket: ${spring.cloud.aws.s3.bucket}
+      credentials:
+        accessKey: ${spring.cloud.aws.credentials.accessKey}
+        secretKey: ${spring.cloud.aws.credentials.secretKey}
+      region:
+        static: ${spring.cloud.aws.region.static}
+      stack:
+        auto: ${spring.cloud.aws.stack.auto}
+
+  servlet:
+    multipart:
+      enabled: true
+      maxFileSize: 60MB
+      maxRequestSize: 60MB
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql: debug
+        type: trace
+
+springdoc:
+  packages-to-scan: hackathon.diary
+  default-consumes-media-type: application/json;charset=UTF-8
+  default-produces-media-type: application/json;charset=UTF-8
+  swagger-ui:
+    tags-sorter: method
+    operations-sorter: alpha
+  api-docs:
+    path: /api-docs/json
+    groups:
+      enabled: true
+  cache:
+    disabled: true
