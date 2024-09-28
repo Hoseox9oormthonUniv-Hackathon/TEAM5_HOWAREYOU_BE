@@ -18,6 +18,7 @@ public class CorsConfig {
         ArrayList<String> allowedOriginPatterns = new ArrayList<>();
         allowedOriginPatterns.add("http://localhost:5000");
         allowedOriginPatterns.add("http://localhost:3000");
+        allowedOriginPatterns.add("https://howareyou2024.site");
         configuration.setAllowedOrigins(allowedOriginPatterns);
 
         ArrayList<String> allowedHttpMethods = new ArrayList<>();

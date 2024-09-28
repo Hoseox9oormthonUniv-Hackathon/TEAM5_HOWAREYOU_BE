@@ -63,12 +63,14 @@ public class DiaryService {
         return createDiaryResponseDto(diary);
     }
 
+    @Transactional(readOnly = true)
     public List<DiaryResponseDto> getPublicDiaryList() {
         return diaryRepository.findPublicDiaryList().stream()
                 .map(this::createDiaryResponseDto)
                 .collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     public List<DiaryResponseDto> getRecentDiaryList(String email) throws MemberNotFoundException {
         Member member = globalUtil.findByMemberWithEmail(email);
 

@@ -1,12 +1,9 @@
 package hackathon.diary.domain.member.domain.entity;
 
-import hackathon.diary.domain.diary.domain.entity.Diary;
 import hackathon.diary.global.jwt.domain.entity.Token;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
-
-import java.util.List;
 
 @Entity
 @Getter
